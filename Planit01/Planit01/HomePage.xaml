@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Planit01.HomePage"
+             BackgroundColor="#E7623C">
+
+  <ContentPage.Resources>
+  <ResourceDictionary>
+    <Style x:Key="buttonStyle" TargetType="Button">
+      <Setter Property="HorizontalOptions" Value="Center" />
+      <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+      <Setter Property="TextColor" Value="White" />
+    </Style>
+
+    <Style x:Key="frameStyle" TargetType="Frame">
+      <Setter Property="HorizontalOptions" Value="Center" />
+      <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+      <Setter Property="OutlineColor" Value="Black" />
+    </Style>
+  </ResourceDictionary>
+  </ContentPage.Resources>
+  
+  <StackLayout>
+    <Frame Style="{StaticResource frameStyle}" 
+           BackgroundColor="#FFD27A">
+      <Frame.Content>
+        <Button x:Name="loginButton"
+                Text=" log in " 
+                Style="{StaticResource buttonStyle}" />
+      </Frame.Content>
+    </Frame>
+    
+    
+    <Label Text ="the social calendar app" 
+           HorizontalOptions="Center" 
+           TextColor="#FDC364"/>
+    
+    
+    <Frame Style="{StaticResource frameStyle}" 
+           BackgroundColor="#78CEDC">
+      <Frame.Content>
+        <Button x:Name="joinButton"
+                Text=" join " 
+                Style="{StaticResource buttonStyle}" />
+      </Frame.Content>
+    </Frame>
+  
+  </StackLayout>
+ 
+  </ContentPage>
