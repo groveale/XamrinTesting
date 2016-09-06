@@ -39,7 +39,7 @@
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageResource.cs" />
+    <Compile Include="ImageResourceExtension.cs" />
     <Compile Include="JoinPage.xaml.cs">
       <DependentUpon>JoinPage.xaml</DependentUpon>
     </Compile>

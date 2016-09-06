@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 namespace Planit01
 {
     [ContentProperty("Source")]
-    public class ImageResource : IMarkupExtension
+    public class ImageResourceExtension : IMarkupExtension
     {
         public string Source { get; set; }
         public object ProvideValue(IServiceProvider serviceProvider)

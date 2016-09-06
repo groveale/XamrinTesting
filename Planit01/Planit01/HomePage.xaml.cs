@@ -30,6 +30,8 @@ namespace Planit01
                 await Navigation.PushAsync(new JoinPage());
             };
 
+
+
         }
     }
 }

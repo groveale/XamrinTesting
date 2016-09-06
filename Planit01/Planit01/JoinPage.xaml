@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Planit01.JoinPage"
-             BackgroundColor="#E7623C">
+             BackgroundColor="#E7623C"
+             Title="Join">
   
   <Label Text="Join Page" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White"/>
   
