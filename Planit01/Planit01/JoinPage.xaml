@@ -5,6 +5,25 @@
              BackgroundColor="#E7623C"
              Title="Join">
   
-  <Label Text="Join Page" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White"/>
+  <StackLayout>
+  <StackLayout.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Entry">
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+      </Style>
+    </ResourceDictionary>
+  </StackLayout.Resources>
+  
+  <Entry x:Name ="inputName" 
+         Placeholder="Name" 
+         Keyboard="Text" />
+  
+  <Entry x:Name ="inputNumber"
+           Placeholder="PhoneNumber" 
+           Keyboard="Telephone" />
+  
+    
+    
+</StackLayout>
   
 </ContentPage>
