@@ -1,6 +1,7 @@
 ﻿using Plugin.Media;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Planit01
     {
 
         bool newPhoto = false;
+        Stream photoStream = null; 
 
         public JoinPage()
         {
@@ -26,7 +28,7 @@ namespace Planit01
             // Send number to WebAPI
             var phoneNumber = inputNumber.Text;
 
-            bool foundNumber = true;
+            bool foundNumber = false;
 
             // -- All done on back end --
             // isNumber in DB
@@ -39,10 +41,16 @@ namespace Planit01
             else
             {
                 var userName = inputName.Text;
+                Byte[] userImage = null;
                 if (newPhoto)
                 {
                     // User has chosen a new image
-                    var image = inputImage;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        photoStream.CopyTo(memoryStream);
+                        photoStream.Dispose();
+                        userImage = memoryStream.ToArray();
+                    }
                 }
                 
                 // send json to server to create user
@@ -62,9 +70,9 @@ namespace Planit01
                 var photo = await CrossMedia.Current.PickPhotoAsync();
                 inputImage.Source = ImageSource.FromStream(() =>
                 {
-                    var stream = photo.GetStream();
+                    photoStream = photo.GetStream();
                     photo.Dispose();
-                    return stream;
+                    return photoStream;
                 });
 
                 newPhoto = true;
