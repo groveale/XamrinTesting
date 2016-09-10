@@ -5,25 +5,59 @@
              BackgroundColor="#E7623C"
              Title="Join">
   
-  <StackLayout>
-  <StackLayout.Resources>
+  <ContentPage.Resources>
     <ResourceDictionary>
       <Style TargetType="Entry">
-        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+        <Setter Property="WidthRequest" Value="180" />
       </Style>
     </ResourceDictionary>
-  </StackLayout.Resources>
-  
-  <Entry x:Name ="inputName" 
-         Placeholder="Name" 
-         Keyboard="Text" />
-  
-  <Entry x:Name ="inputNumber"
-           Placeholder="PhoneNumber" 
-           Keyboard="Telephone" />
-  
+  </ContentPage.Resources>
+
+  <StackLayout >
     
+    <StackLayout>
+
+      <!-- Errors -->
+      <Label x:Name ="labelUserAlreadyExists"
+             Text="Your number already exist in our database please re-enter or click Login to sign in"
+             IsEnabled="False"
+             IsVisible="False"/>
+
+    </StackLayout>
     
+    <ScrollView VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center">
+    <StackLayout>
+
+    <Entry x:Name="inputName" 
+           Placeholder="Name" 
+           Keyboard="Text" />
+  
+    <Entry x:Name="inputNumber"
+             Placeholder="PhoneNumber" 
+             Keyboard="Telephone" />
+
+      <Image x:Name="inputImage"
+             Aspect="AspectFill">
+            <Image.GestureRecognizers>
+              <TapGestureRecognizer Tapped="OnPhotoTapped" />
+            </Image.GestureRecognizers>
+      </Image>
+
+    <Button x:Name="buttonJoin"
+             Text="Join"
+             FontSize="Large"
+             Clicked="OnJoinButtonClicked"/>
+
+    <Button x:Name="buttonLogin"
+             Text="Login"
+             FontSize="Large"
+             Clicked="OnLoginButtonClicked"
+            IsEnabled="False"
+            IsVisible="False"/>
+      
+    </StackLayout> 
+  </ScrollView>
 </StackLayout>
   
 </ContentPage>

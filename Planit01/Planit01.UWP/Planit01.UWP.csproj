@@ -108,6 +108,7 @@
     <None Include="Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\default-user-image.png" />
     <Content Include="Images\join.png" />
     <Content Include="Images\login.png" />
     <Content Include="Properties\Default.rd.xml" />
