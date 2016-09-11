@@ -1,8 +1,11 @@
-﻿using Plugin.Media;
+﻿using Newtonsoft.Json;
+using Plugin.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +15,10 @@ namespace Planit01
 {
     public partial class JoinPage : ContentPage
     {
-
         bool newPhoto = false;
-        Stream photoStream = null; 
+        Stream photoStream = null;
+        
+
 
         public JoinPage()
         {
@@ -26,13 +30,8 @@ namespace Planit01
         async void OnJoinButtonClicked(object sender, EventArgs args)
         {
             // Send number to WebAPI
-            var phoneNumber = inputNumber.Text;
-
-            bool foundNumber = false;
-
-            // -- All done on back end --
-            // isNumber in DB
-            //foundNumber = 
+            var userNumber = inputNumber.Text;
+            bool foundNumber = await DoesUserExist(userNumber);
 
             if (foundNumber)
             {
@@ -89,8 +88,59 @@ namespace Planit01
         {
             labelUserAlreadyExists.IsEnabled = true;
             labelUserAlreadyExists.IsVisible = true;
-            buttonLogin.IsEnabled = true;
-            buttonLogin.IsVisible = true;
+
+            // Don't enable login button if server error
+            if (labelUserAlreadyExists.Text.Contains("Login"))
+            {
+                buttonLogin.IsEnabled = true;
+                buttonLogin.IsVisible = true;
+            }
+            
+        }
+
+        async Task<bool> DoesUserExist(string userNumber)
+        {
+            string result = "";
+            bool foundNumber = true;
+
+            // Make Get request to API
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("http://localhost:53615");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("/User/" + userNumber);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                catch
+                {
+                    result = "Unable to contact server";
+                }
+            }
+
+            switch (result.ToString())
+            {
+                case "true":
+                    foundNumber = true;
+                    break;
+
+                case "false":
+                    foundNumber = false;
+                    break;
+
+                default:
+                    labelUserAlreadyExists.Text = "Unable to connect to server please check internet connection and try again";
+                    break;
+            }
+
+            return foundNumber;
         }
 
     }
