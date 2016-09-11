@@ -16,10 +16,7 @@ namespace Planit01
 {
     public partial class JoinPage : ContentPage
     {
-        bool newPhoto = false;
-        Stream photoStream = null;
-        
-
+        Byte[] userImage = null;
 
         public JoinPage()
         {
@@ -41,17 +38,6 @@ namespace Planit01
             else
             {
                 var userName = inputName.Text;
-                Byte[] userImage = null;
-                if (newPhoto)
-                {
-                    // User has chosen a new image
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        photoStream.CopyTo(memoryStream);
-                        photoStream.Dispose();
-                        userImage = memoryStream.ToArray();
-                    }
-                }
 
                 // send json to server to create user
                 CreateUser(userName, userNumber, userImage);
@@ -68,12 +54,16 @@ namespace Planit01
                 var photo = await CrossMedia.Current.PickPhotoAsync();
                 inputImage.Source = ImageSource.FromStream(() =>
                 {
-                    photoStream = photo.GetStream();
-                    photo.Dispose();
+                    Stream photoStream = photo.GetStream();
                     return photoStream;
                 });
 
-                newPhoto = true;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    photo.GetStream().CopyTo(ms);
+                    photo.Dispose();
+                    userImage = ms.ToArray();
+                }
             }
                 
         }
