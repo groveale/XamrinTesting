@@ -5,7 +5,55 @@
              BackgroundColor="#E7623C"
              Title="Profile">
 
-  <Label Text="Profile Page" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White"/>
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Label">
+        <Setter Property="TextColor" Value="White" />
+      </Style>
+      <Style TargetType="Button">
+        <Setter Property="TextColor" Value="White" />
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  
+  <StackLayout HorizontalOptions="Center" >
 
+    <Label x:Name ="labelName"
+             Text="your name"
+             FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
+    <Label x:Name ="labelNotifications"
+           Text="new notifications"
+           FontSize="Small"
+           HorizontalTextAlignment="End"/>
+
+    <Image x:Name="imageProfile"
+             Aspect="AspectFill">
+      <Image.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnPhotoTapped" />
+      </Image.GestureRecognizers>
+    </Image>
+
+    <Label x:Name ="labelAwardsList"
+           Text="awards:"
+           FontSize="Medium"/>
+
+    <Button x:Name="buttonCalendar"
+             Text="calendar"
+             FontSize="Medium"
+             Clicked="OnCalendarButtonClicked"/>
+    
+    <Button x:Name="buttonGroups"
+             Text="groups"
+             FontSize="Medium"
+             Clicked="OnGroupButtonClicked"/>
+
+    <Button x:Name="buttonCreateEvent"
+             Text="create event"
+             FontSize="Medium"
+             Clicked="OnCreateEventButtonClicked"/>
+
+</StackLayout>
 
 </ContentPage>

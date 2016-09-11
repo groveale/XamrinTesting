@@ -13,6 +13,7 @@
           </Style>
         </ResourceDictionary>
       </ContentPage.Resources>
+  
 <StackLayout>
   <StackLayout VerticalOptions="CenterAndExpand"
                HorizontalOptions="Center">
