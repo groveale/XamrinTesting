@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Planit01.Models;
 using Plugin.Media;
 using System;
 using System.Collections.Generic;
@@ -51,12 +52,10 @@ namespace Planit01
                         userImage = memoryStream.ToArray();
                     }
                 }
-                
-                // send json to server to create user
-                // Response received from server that user has been created
 
-                // Go to profile page
-                await Navigation.PushAsync(new ProfilePage());
+                // send json to server to create user
+                CreateUser(userName, userNumber, userImage);
+
 
             }
         }
@@ -98,12 +97,48 @@ namespace Planit01
             
         }
 
+        async void CreateUser(string userName, string userNumber, Byte[] userImage)
+        {
+            // Make HTTP POST
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:53615");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var newUser = new User() { UserName = userName, UserNumber = userNumber, UserPhoto = userImage };
+                var json = JsonConvert.SerializeObject(newUser);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync("/Users", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // New user succesfully created
+                        labelUserCreated.IsEnabled = true;
+                        labelUserCreated.IsVisible = true;
+                        buttonJoin.IsVisible = false;
+                        buttonJoin.IsEnabled = false;
+                        buttonLogin.IsEnabled = true;
+                        buttonLogin.IsVisible = true;
+                    }
+                }
+                catch
+                {
+                    labelUserAlreadyExists.Text = "Unable to connect to server please check internet connection and try again";
+                    labelUserAlreadyExists.IsVisible = true;
+                    labelUserAlreadyExists.IsEnabled = true;
+                }
+            }
+        }
+
         async Task<bool> DoesUserExist(string userNumber)
         {
             string result = "";
             bool foundNumber = true;
 
-            // Make Get request to API
+            // Make HTTP Get request to API
             using (var client = new HttpClient())
             {
 

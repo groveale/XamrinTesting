@@ -23,6 +23,11 @@
              IsEnabled="False"
              IsVisible="False"/>
 
+      <Label x:Name ="labelUserCreated"
+             Text="Sucessfully created new account, please click login to sign in"
+             IsEnabled="False"
+             IsVisible="False"/>
+
     </StackLayout>
     
     <ScrollView VerticalOptions="CenterAndExpand"
