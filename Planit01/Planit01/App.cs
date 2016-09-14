@@ -12,7 +12,8 @@ namespace Planit01
         public App()
         {
             // The root page of your application
-            MainPage = new NavigationPage(new HomePage())
+            //MainPage = new NavigationPage(new HomePage())
+            MainPage = new NavigationPage(new CalendarPage())
             {
                 BarBackgroundColor = Color.FromHex("#3B4550"),
                 BarTextColor = Color.FromHex("#E7623C")
