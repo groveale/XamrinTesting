@@ -9,15 +9,31 @@ namespace Planit01
 {
     public class App : Application
     {
+        // obtained using device ID and querying DB
+        private string userId = "";
+
         public App()
         {
-            // The root page of your application
-            //MainPage = new NavigationPage(new HomePage())
-            MainPage = new NavigationPage(new CalendarPage())
+            // GrosserPhoto user for app
+            userId = "2002";
+
+            // If no number/device id found
+            if (userId == "")
             {
-                BarBackgroundColor = Color.FromHex("#3B4550"),
-                BarTextColor = Color.FromHex("#E7623C")
-            };
+                MainPage = new NavigationPage(new HomePage())
+                {
+                    BarBackgroundColor = Color.FromHex("#3B4550"),
+                    BarTextColor = Color.FromHex("#E7623C")
+                };
+            }
+            else
+            {
+                MainPage = new NavigationPage(new ProfilePage(userId))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B4550"),
+                    BarTextColor = Color.FromHex("#E7623C")
+                };
+            }          
         }
 
         protected override void OnStart()

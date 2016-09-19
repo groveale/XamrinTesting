@@ -1,6 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Planit01.Models;
+using Plugin.Media;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,21 +16,83 @@ namespace Planit01
 {
     public partial class ProfilePage : ContentPage
     {
-        public ProfilePage()
+        private string userId = "";
+        private User user;
+        private string errorMsg;
+        private Byte[] userImage = null;
+
+        public ProfilePage(String userIdFromDB)
         {
             InitializeComponent();
 
-            imageProfile.Source = ImageSource.FromFile("Images/default-user-image.png");
+            userId = userIdFromDB;
+
+            GetUser(userId);
+        }
+
+        void populateUserDetails(User userFromDB)
+        {
+            labelName.Text = userFromDB.UserName;
+
+            imageProfile.Source = convertByteToImageSource(userImage);
+
+        }
+
+        private ImageSource convertByteToImageSource(Byte[] imageFromDB)
+        {
+            if (imageFromDB == null)
+            {
+                // if no image return default
+                return ImageSource.FromFile("Images/default-user-image.png");
+            }
+            else
+            {
+                using (var ms = new MemoryStream(imageFromDB))
+                {
+                    // LAMDA
+                    return ImageSource.FromStream(() => ms);
+                }
+            }
+            
+        }
+
+        async void GetUser(String userId)
+        {
+            // Make HTTP Get request to API
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("http://localhost:53615");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("/Users/" + userId);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        user = JsonConvert.DeserializeObject<User>(content);
+
+                        // Send user deets to interface
+                        populateUserDetails(user);
+                    }
+                }
+                catch
+                {
+                    errorMsg = "Unable to get user data server";
+                }
+            }
         }
 
         async void OnPhotoTapped(object sender, EventArgs args)
         {
-            /*
+            
             // Select a photo from gallery 
             if (CrossMedia.Current.IsPickPhotoSupported)
             {
                 var photo = await CrossMedia.Current.PickPhotoAsync();
-                inputImage.Source = ImageSource.FromStream(() =>
+                imageProfile.Source = ImageSource.FromStream(() =>
                 {
                     Stream photoStream = photo.GetStream();
                     return photoStream;
@@ -37,7 +105,7 @@ namespace Planit01
                     userImage = ms.ToArray();
                 }
             }
-            */
+            
         }
 
         async void OnCreateEventButtonClicked(object sender, EventArgs args)
@@ -55,7 +123,7 @@ namespace Planit01
         async void OnCalendarButtonClicked(object sender, EventArgs args)
         {
             // Go to calendar page
-            //await Navigation.PushAsync(new LoginPage());
+            await Navigation.PushAsync(new CalendarPage());
         }
     }
 }

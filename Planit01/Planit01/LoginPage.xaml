@@ -17,8 +17,15 @@
 <StackLayout>
   <StackLayout VerticalOptions="CenterAndExpand"
                HorizontalOptions="Center">
-    <!-- Errors -->      <Label x:Name ="labelNumberNotFound"             Text="Your Number was not found on the System please re-enter or click Join to sign up"             IsEnabled="False"
-             IsVisible="False"/>          <Label x:Name ="labelIncorrectAuth"             Text="Incorrect Auth code entered, please check and try again"             IsEnabled="False"
+    <!-- Errors -->
+      <Label x:Name ="labelNumberNotFound"
+             Text="Your Number was not found on the System please re-enter or click Join to sign up"
+             IsEnabled="False"
+             IsVisible="False"/>
+    
+      <Label x:Name ="labelIncorrectAuth"
+             Text="Incorrect Auth code entered, please check and try again"
+             IsEnabled="False"
              IsVisible="False"/>
   
   </StackLayout>  
@@ -56,11 +63,17 @@
              Clicked="OnLoginButtonClicked"
              IsEnabled="False"
              IsVisible="False"/>
-              <!-- Reset Page -->  <Button x:Name="buttonReset"
+    
+    
+  
+    <!-- Reset Page -->
+  <Button x:Name="buttonReset"
              Text="Start Again"
              FontSize="Small"
              Clicked="OnResetButtonClicked"
              IsEnabled="True"
-             IsVisible="True"/>  </StackLayout>
+             IsVisible="True"/>
+  
+</StackLayout>
   </StackLayout>
 </ContentPage>

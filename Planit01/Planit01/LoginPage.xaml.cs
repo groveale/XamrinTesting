@@ -11,6 +11,7 @@ namespace Planit01
     public partial class LoginPage : ContentPage
     {
         string authCodeFromServer = "0000";
+        string userId = "2001";
 
         public LoginPage()
         {
@@ -42,6 +43,7 @@ namespace Planit01
 
                 // Response received from server that auth code has been sent
                 //authCodeFromServer = "Value from server";
+                //userId = "Value from server" 
 
                 // Enable input Auth code field
                 inputAuthCode.IsEnabled = true;
@@ -61,7 +63,7 @@ namespace Planit01
                // -- All done on back end --
                // Send response to server that user has been authenticated
 
-               await Navigation.PushAsync(new ProfilePage());
+               await Navigation.PushAsync(new ProfilePage(userId));
             }
             else
             {
