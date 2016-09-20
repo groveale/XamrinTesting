@@ -15,45 +15,104 @@
       </Style>
     </ResourceDictionary>
   </ContentPage.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="6*" />
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="1*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+   
   
-  <StackLayout HorizontalOptions="Center" >
+
 
     <Label x:Name ="labelName"
+             Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
              Text="your name"
              FontSize="Large"
            HorizontalTextAlignment="Center"/>
 
+    <Label x:Name ="labelNotificationsNumber"
+           Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+           Text="4"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
     <Label x:Name ="labelNotifications"
-           Text="new notifications"
-           FontSize="Small"
-           HorizontalTextAlignment="End"/>
+           Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3"
+           Text="notifications"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
 
     <Image x:Name="imageProfile"
-             Aspect="AspectFill">
+             Aspect="AspectFit"
+             Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
+           HorizontalOptions="Center">
       <Image.GestureRecognizers>
         <TapGestureRecognizer Tapped="OnPhotoTapped" />
       </Image.GestureRecognizers>
     </Image>
 
     <Label x:Name ="labelAwardsList"
+           Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
            Text="awards:"
-           FontSize="Medium"/>
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
+    <Label x:Name ="labelAward1"
+           Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1"
+           Text="+"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
+    <Label x:Name ="labelAward2"
+           Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1"
+           Text="$"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
+    <Label x:Name ="labelAward3"
+           Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="1"
+           Text="O"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
+
+    <Label x:Name ="labelAward4"
+           Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="1"
+           Text="%"
+           FontSize="Large"
+           HorizontalTextAlignment="Center"/>
 
     <Button x:Name="buttonCalendar"
+            Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"
              Text="calendar"
              FontSize="Medium"
              Clicked="OnCalendarButtonClicked"/>
     
     <Button x:Name="buttonGroups"
+            Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6"
              Text="groups"
              FontSize="Medium"
              Clicked="OnGroupButtonClicked"/>
 
     <Button x:Name="buttonCreateEvent"
+            Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="6"
              Text="create event"
              FontSize="Medium"
              Clicked="OnCreateEventButtonClicked"/>
 
-</StackLayout>
+  </Grid>
 
 </ContentPage>
