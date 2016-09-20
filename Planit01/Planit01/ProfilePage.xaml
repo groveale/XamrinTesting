@@ -29,8 +29,7 @@
            HorizontalTextAlignment="End"/>
 
     <Image x:Name="imageProfile"
-             Aspect="AspectFill"
-             Source="{Binding imageSource}">
+             Aspect="AspectFill">
       <Image.GestureRecognizers>
         <TapGestureRecognizer Tapped="OnPhotoTapped" />
       </Image.GestureRecognizers>

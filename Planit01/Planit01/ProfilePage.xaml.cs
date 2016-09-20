@@ -34,7 +34,7 @@ namespace Planit01
         {
             labelName.Text = userFromDB.UserName;
 
-            imageProfile.Source = convertByteToImageSource(userImage);
+            imageProfile.Source = convertByteToImageSource(userFromDB.UserPhoto);
 
         }
 
@@ -47,11 +47,11 @@ namespace Planit01
             }
             else
             {
-                using (var ms = new MemoryStream(imageFromDB))
-                {
-                    // LAMDA
-                    return ImageSource.FromStream(() => ms);
-                }
+                // Potentially just required for windows
+                Stream stream = new MemoryStream(imageFromDB);
+                // LAMDA
+                return ImageSource.FromStream(() => stream);
+
             }
             
         }
