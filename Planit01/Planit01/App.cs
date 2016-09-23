@@ -11,11 +11,14 @@ namespace Planit01
     {
         // obtained using device ID and querying DB
         private string userId = "";
+        private string phoneNumber = "";
 
         public App()
         {
+            // Check to see if user has already authenticated app
+            phoneNumber = alreadyAuthenticated();
             // GrosserPhoto user for app
-            userId = "2002";
+            userId = "";
 
             // If no number/device id found
             if (userId == "")
@@ -28,6 +31,9 @@ namespace Planit01
             }
             else
             {
+
+
+
                 MainPage = new NavigationPage(new ProfilePage(userId))
                 {
                     BarBackgroundColor = Color.FromHex("#3B4550"),
@@ -49,6 +55,20 @@ namespace Planit01
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+
+        private string alreadyAuthenticated()
+        {
+            try
+            {
+                string phoneNumberFromPhone = Application.Current.Properties["phoneNumber"] as string;
+                return phoneNumberFromPhone;
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 }

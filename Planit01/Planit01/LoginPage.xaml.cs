@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.DeviceInfo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,7 @@ namespace Planit01
                 // Enable input Auth code field
                 inputAuthCode.IsEnabled = true;
                 inputAuthCode.IsVisible = true;
+                inputPhone.IsEnabled = false;
                 buttonAuth.IsEnabled = false;
                 buttonAuth.IsVisible = false;
                 buttonLogin.IsEnabled = true;
@@ -60,10 +62,19 @@ namespace Planit01
         {
             if (authCodeFromServer.Equals(inputAuthCode.Text))
             {
-               // -- All done on back end --
-               // Send response to server that user has been authenticated
 
-               await Navigation.PushAsync(new ProfilePage(userId));
+                // Save phone number to device (KeyPair)
+                Application.Current.Properties["phoneNumber"] = inputPhone.Text;
+                await Application.Current.SavePropertiesAsync();
+                // Generate ID
+                var phoneID = CrossDeviceInfo.Current.Id;
+
+                // -- All done on back end --
+                // Send number and device pair to server to use for authentication
+
+
+
+                await Navigation.PushAsync(new ProfilePage(userId));
             }
             else
             {
@@ -80,19 +91,18 @@ namespace Planit01
         void OnResetButtonClicked(object sender, EventArgs args)
         {
             inputPhone.Text = "";
+            inputPhone.IsEnabled = true;
+            inputAuthCode.IsVisible = false;
             inputAuthCode.Text = "";
             buttonAuth.IsVisible = true;
             buttonAuth.IsEnabled = true;
             buttonLogin.IsVisible = false;
             buttonJoin.IsVisible = false;
-            labelNumberNotFound.IsVisible = false;
-            labelIncorrectAuth.IsVisible = false;
         }
 
         private void PhoneNumberNotFound()
         {
-            labelNumberNotFound.IsEnabled = true;
-            labelNumberNotFound.IsVisible = true;
+            DisplayAlert("Do you exist", "Your Number was not found on the System please re-enter or click Join to sign up", "OK");
             buttonJoin.IsEnabled = true;
             buttonJoin.IsVisible = true;
         }
@@ -101,8 +111,8 @@ namespace Planit01
         {
             // Clear entered Auth code
             inputAuthCode.Text = "";
-            labelIncorrectAuth.IsEnabled = true;
-            labelIncorrectAuth.IsVisible = true;
+            // Display alert
+            DisplayAlert("Incorrect Code", "Incorrect Auth code entered, please check and try again", "OK");
         }
     }
 }
