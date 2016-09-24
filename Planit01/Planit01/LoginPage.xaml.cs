@@ -1,7 +1,10 @@
-﻿using Plugin.DeviceInfo;
+﻿using Newtonsoft.Json;
+using Planit01.Models;
+using Plugin.DeviceInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +15,7 @@ namespace Planit01
     public partial class LoginPage : ContentPage
     {
         string authCodeFromServer = "0000";
-        string userId = "2001";
+        int userId = 2002;
 
         public LoginPage()
         {
@@ -23,13 +26,20 @@ namespace Planit01
         {
             // Send number to WebAPI
             var phoneNumber = inputPhone.Text;
-
             
             bool foundNumber = true;
 
             // -- All done on back end --
-            // isNumber in DB
-            //foundNumber = 
+            // isNumber in DB, if yes, user ID comes back
+
+
+
+            //userId =  
+
+            if (userId == 0)
+            {
+                foundNumber = false;
+            }
 
             if (!foundNumber)
             {
@@ -44,7 +54,7 @@ namespace Planit01
 
                 // Response received from server that auth code has been sent
                 //authCodeFromServer = "Value from server";
-                //userId = "Value from server" 
+                
 
                 // Enable input Auth code field
                 inputAuthCode.IsEnabled = true;
@@ -67,12 +77,11 @@ namespace Planit01
                 Application.Current.Properties["phoneNumber"] = inputPhone.Text;
                 await Application.Current.SavePropertiesAsync();
                 // Generate ID
-                var phoneID = CrossDeviceInfo.Current.Id;
-
-                // -- All done on back end --
-                // Send number and device pair to server to use for authentication
+                var deviceID = CrossDeviceInfo.Current.Id;
 
 
+                // Send number and device pair to server to store for authentication
+                CreateDeviceUserMapping(userId, deviceID);
 
                 await Navigation.PushAsync(new ProfilePage(userId));
             }
@@ -81,6 +90,37 @@ namespace Planit01
                 AuthNumberIncorrect();
             }
             
+        }
+
+        async void CreateDeviceUserMapping(int userId, string phoneID)
+        {
+            string RestUrl = "http://localhost:53615/Devices";
+            var uri = new Uri(string.Format(RestUrl));
+
+            try
+            {
+
+                var newDeviceParing = new DeviceParing() { DeviceId = phoneID, DeviceParingUserId = userId};
+                var json = JsonConvert.SerializeObject(newDeviceParing);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using (var client = new HttpClient())
+                {
+
+                    HttpResponseMessage response = null;
+                    response = await client.PostAsync(uri, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        await DisplayAlert("Authenticated", "Successfully Authenticated Device, click OK to go to your profile page", "OK");
+                    }
+                }
+
+            }
+            catch
+            {
+                await DisplayAlert("Error", "Unable to authenticate, click OK and try again", "OK");
+            }
         }
 
         async void OnJoinButtonClicked(object sender, EventArgs args)

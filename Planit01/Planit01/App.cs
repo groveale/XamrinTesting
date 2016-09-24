@@ -10,7 +10,7 @@ namespace Planit01
     public class App : Application
     {
         // obtained using device ID and querying DB
-        private string userId = "";
+        private int userId = 0;
         private string phoneNumber = "";
 
         public App()
@@ -18,10 +18,10 @@ namespace Planit01
             // Check to see if user has already authenticated app
             phoneNumber = alreadyAuthenticated();
             // GrosserPhoto user for app
-            userId = "";
+            //userId = 1212;
 
             // If no number/device id found
-            if (userId == "")
+            if (userId == 0)
             {
                 MainPage = new NavigationPage(new HomePage())
                 {

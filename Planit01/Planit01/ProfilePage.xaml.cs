@@ -16,12 +16,12 @@ namespace Planit01
 {
     public partial class ProfilePage : ContentPage
     {
-        private string userId = "";
+        private int userId = 0;
         private User user;
         private string errorMsg;
         private Byte[] userImage = null;
 
-        public ProfilePage(String userIdFromDB)
+        public ProfilePage(int userIdFromDB)
         {
             InitializeComponent();
 
@@ -56,7 +56,7 @@ namespace Planit01
             
         }
 
-        async void GetUser(String userId)
+        async void GetUser(int userId)
         {
             // Make HTTP Get request to API
             using (var client = new HttpClient())
