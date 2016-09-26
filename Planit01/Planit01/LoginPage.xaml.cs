@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,21 +28,13 @@ namespace Planit01
             // Send number to WebAPI
             var phoneNumber = inputPhone.Text;
             
-            bool foundNumber = true;
 
             // -- All done on back end --
             // isNumber in DB, if yes, user ID comes back
 
-
-
-            //userId =  
+            GetUserID(phoneNumber);
 
             if (userId == 0)
-            {
-                foundNumber = false;
-            }
-
-            if (!foundNumber)
             {
                 PhoneNumberNotFound();
             }
@@ -66,6 +59,42 @@ namespace Planit01
                 buttonLogin.IsVisible = true;
             }
             
+        }
+
+        async void GetUserID(string phoneNumber)
+        {
+            string result = "";
+
+            // Make HTTP Get request to API
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("http://localhost:53615");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("/User/" + phoneNumber);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                        if (result != "0")
+                        {
+                            userId = Int32.Parse(result);
+                        }
+                        else
+                        {
+                            userId = 0;
+                        }
+                    }
+
+                }
+                catch
+                {
+                    await DisplayAlert ("No Connection", "Unable to connect to server please check internet connection and try again", "OK");
+                }
+            }
         }
 
         async void OnLoginButtonClicked(object sender, EventArgs args)

@@ -126,7 +126,6 @@ namespace Planit01
         async Task<bool> DoesUserExist(string userNumber)
         {
             string result = "";
-            bool foundNumber = true;
 
             // Make HTTP Get request to API
             using (var client = new HttpClient())
@@ -142,30 +141,22 @@ namespace Planit01
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsStringAsync();
+                        if (result != "0")
+                        {
+                            return true;
+                        }
+                        return false;
                     }
+                    labelUserAlreadyExists.Text = "Unable to connect to server please check internet connection and try again";
+                    return false;
                 }
                 catch
                 {
-                    result = "Unable to contact server";
+                    labelUserAlreadyExists.Text = "Unable to connect to server please check internet connection and try again";
+                    return false;
                 }
             }
 
-            switch (result.ToString())
-            {
-                case "true":
-                    foundNumber = true;
-                    break;
-
-                case "false":
-                    foundNumber = false;
-                    break;
-
-                default:
-                    labelUserAlreadyExists.Text = "Unable to connect to server please check internet connection and try again";
-                    break;
-            }
-
-            return foundNumber;
         }
 
     }
