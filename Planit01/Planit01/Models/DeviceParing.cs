@@ -8,8 +8,8 @@ namespace Planit01.Models
 {
     public class DeviceParing
     {
-        public int DeviceParingId { get; set; }
-        public int DeviceParingUserId { get; set; }
+        public string DeviceParingId { get; set; }
+        public string DeviceParingUserId { get; set; }
         public string DeviceId { get; set; }
     }
 }

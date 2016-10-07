@@ -8,6 +8,7 @@ namespace Planit01.Models
 {
     class User
     {
+        public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserNumber { get; set; }
         public byte[] UserPhoto { get; set; }

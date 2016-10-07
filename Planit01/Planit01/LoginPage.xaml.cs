@@ -16,7 +16,7 @@ namespace Planit01
     public partial class LoginPage : ContentPage
     {
         string authCodeFromServer = "0000";
-        int userId = 2002;
+        string userId = "135C88BB-DADA-4A21-9317-6A2EF0E1B2F8";
 
         public LoginPage()
         {
@@ -31,10 +31,10 @@ namespace Planit01
 
             // -- All done on back end --
             // isNumber in DB, if yes, user ID comes back
-
+            // check if user exists True or false
             GetUserID(phoneNumber);
 
-            if (userId == 0)
+            if (userId == "")
             {
                 PhoneNumberNotFound();
             }
@@ -48,6 +48,8 @@ namespace Planit01
                 // Response received from server that auth code has been sent
                 //authCodeFromServer = "Value from server";
                 
+
+                // Now that device has been authenticated can send user ID
 
                 // Enable input Auth code field
                 inputAuthCode.IsEnabled = true;
@@ -63,13 +65,13 @@ namespace Planit01
 
         async void GetUserID(string phoneNumber)
         {
-            string result = "";
+            User result;
 
             // Make HTTP Get request to API
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri("http://localhost:53615");
+                client.BaseAddress = new Uri(Constants.restURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -78,14 +80,15 @@ namespace Planit01
                     HttpResponseMessage response = await client.GetAsync("/User/" + phoneNumber);
                     if (response.IsSuccessStatusCode)
                     {
-                        result = await response.Content.ReadAsStringAsync();
-                        if (result != "0")
+                        var content = await response.Content.ReadAsStringAsync();
+                        result = JsonConvert.DeserializeObject<User>(content);
+                        if (result.UserId != "00000000-0000-0000-0000-000000000000")
                         {
-                            userId = Int32.Parse(result);
+                            userId = result.UserId;
                         }
                         else
                         {
-                            userId = 0;
+                            userId = "";
                         }
                     }
 
@@ -121,7 +124,7 @@ namespace Planit01
             
         }
 
-        async void CreateDeviceUserMapping(int userId, string phoneID)
+        async void CreateDeviceUserMapping(string userId, string phoneID)
         {
             string RestUrl = "http://localhost:53615/Devices";
             var uri = new Uri(string.Format(RestUrl));

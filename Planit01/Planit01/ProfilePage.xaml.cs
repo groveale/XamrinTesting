@@ -16,12 +16,12 @@ namespace Planit01
 {
     public partial class ProfilePage : ContentPage
     {
-        private int userId = 0;
+        private string userId = "";
         private User user;
         private string errorMsg;
         private Byte[] userImage = null;
 
-        public ProfilePage(int userIdFromDB)
+        public ProfilePage(string userIdFromDB)
         {
             InitializeComponent();
 
@@ -56,13 +56,13 @@ namespace Planit01
             
         }
 
-        async void GetUser(int userId)
+        async void GetUser(string userId)
         {
             // Make HTTP Get request to API
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri("http://localhost:53615");
+                client.BaseAddress = new Uri(Constants.restURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -80,7 +80,7 @@ namespace Planit01
                 }
                 catch
                 {
-                    errorMsg = "Unable to get user data server";
+                    await DisplayAlert("Connection Error", "Unable to get user data server", "OK");
                 }
             }
         }
